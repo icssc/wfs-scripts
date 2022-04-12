@@ -1,5 +1,5 @@
 import promptSync from 'prompt-sync';
-import * as search from '../websoc-fuzzy-search/index.js';
+import * as search from 'websoc-fuzzy-search';
 const prompt = promptSync({ sigint: true, eot: true });
 console.time('Initialization took');
 search.init().then(() => {
