@@ -2,7 +2,7 @@
 import { mkdirSync, readFileSync,writeFileSync } from 'fs';
 import { constants } from 'os';
 import { join, normalize } from 'path';
-import fetch from 'node-fetch';
+import fetch from 'cross-fetch';
 import pluralize from 'pluralize';
 
 // input-output configuration
