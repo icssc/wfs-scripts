@@ -4,7 +4,7 @@
   "private": true,
   "description": "Scripts for websoc-fuzzy-search",
   "scripts": {
-    "driver": "node driver.js",
+    "driver": "node --experimental-json-modules driver.js",
     "setup": "node setup.js"
   },
   "license": "MIT",
