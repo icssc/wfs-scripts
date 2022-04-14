@@ -64,11 +64,11 @@ function parseAndWriteData(d) {
         aliases: {},
         keywords: {},
         objects: {
-            'GE-1a': {
+            'GE-1A': {
                 name: 'Lower Division Writing',
             },
 
-            'GE-1b': {
+            'GE-1B': {
                 name: 'Upper Division Writing',
             },
 
@@ -84,11 +84,11 @@ function parseAndWriteData(d) {
                 name: 'Arts and Humanities',
             },
 
-            'GE-5a': {
+            'GE-5A': {
                 name: 'Quantitative Literacy',
             },
 
-            'GE-5b': {
+            'GE-5B': {
                 name: 'Formal Reasoning',
             },
 
