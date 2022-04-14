@@ -1,6 +1,6 @@
 console.time('Initialization took');
 import promptSync from 'prompt-sync';
-import * as search from 'websoc-fuzzy-search';
+import search from 'websoc-fuzzy-search';
 const prompt = promptSync({ sigint: true, eot: true });
 console.timeEnd('Initialization took');
 while (true) {
@@ -27,7 +27,7 @@ while (true) {
         }
         mask = prompt('(Optional) Enter a comma-separated list of categories to ignore: ');
         console.time('Query took');
-        console.log(search.search(query, numResults, mask.split(',')));
+        console.log(search(query, numResults, mask ? mask.split(',') : []));
         console.timeEnd('Query took');
     } catch (e) {
         console.error(e);
