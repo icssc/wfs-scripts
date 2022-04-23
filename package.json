@@ -5,7 +5,7 @@
   "description": "Scripts for websoc-fuzzy-search",
   "scripts": {
     "driver": "node --experimental-json-modules driver.js",
-    "setup": "node setup.js"
+    "setup": "node --experimental-json-modules setup.js"
   },
   "license": "MIT",
   "dependencies": {

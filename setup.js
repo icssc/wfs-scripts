@@ -1,9 +1,10 @@
 // imports
-import { mkdirSync, readFileSync,writeFileSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { constants } from 'os';
 import { join, normalize } from 'path';
 import fetch from 'cross-fetch';
 import pluralize from 'pluralize';
+import { default as aliases } from './aliases.json';
 
 // input-output configuration
 const localPrefix = normalize(`./cache/`);
@@ -59,6 +60,7 @@ function associate(d, k, o) {
 // parse the data into the format we want, and write it to the output
 function parseAndWriteData(d) {
     console.log('Parsing data...');
+
     // GE categories
     let parsedData = {
         aliases: {},
@@ -105,7 +107,6 @@ function parseAndWriteData(d) {
             },
         },
     };
-
     for (const [key, value] of Object.entries(parsedData.objects)) {
         parsedData.objects[key].type = 'GE_CATEGORY';
         parsedData.objects[key].metadata = {};
@@ -119,6 +120,14 @@ function parseAndWriteData(d) {
         }
     }
 
+    // department aliases
+    for (const [key, value] of Object.entries(aliases)) {
+        for (const department of value) {
+            associate(parsedData.aliases, key, department);
+            associate(parsedData.keywords, key, department);
+        }
+    }
+
     // departments and courses
     for (const [key, value] of Object.entries(d.courses)) {
         if (!Object.keys(parsedData.objects).includes(value.department)) {
@@ -127,10 +136,6 @@ function parseAndWriteData(d) {
                 name: value.department_name,
                 metadata: {},
             };
-            for (const alias of [...value.department_alias.map((x) => x.toLowerCase())]) {
-                parsedData.aliases[alias] = value.department;
-                associate(parsedData.keywords, alias, value.department);
-            }
             for (const keyword of [value.department.toLowerCase(), ...keywordize(value.department_name)]) {
                 associate(parsedData.keywords, keyword, value.department);
             }
@@ -160,11 +165,12 @@ function parseAndWriteData(d) {
         }
     }
 
-    for (const [key, value] of Object.entries(parsedData.keywords)) {
-        parsedData.keywords[key] = [...value];
-    }
+    // write the index using a replacer for Sets
     console.log('Writing parsed data...');
-    writeFileSync(`${outputFile}`, JSON.stringify(parsedData));
+    writeFileSync(
+        `${outputFile}`,
+        JSON.stringify(parsedData, (k, v) => (v instanceof Set ? [...v] : v))
+    );
     console.log(`Wrote index to file ${outputFile}`);
     console.timeEnd('Index built in');
     process.exit(0);
