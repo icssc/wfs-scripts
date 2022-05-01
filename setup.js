@@ -38,9 +38,23 @@ function keywordize(s) {
         .replaceAll('u.s.', 'us')
         .replaceAll(/[&'(),\-/:]/g, ' ')
         .split(' ')
-        .map((x) => (Object.keys(romans).includes(x) ? romans[x] : x))
+        .map((x) => (Object.keys(romans).includes(x) ? [x, romans[x]] : x))
+        .flat()
         .map((x) => (x === 'us' || x === 'we' ? x : pluralize(x, 1)))
         .filter((x) => !toFilter.includes(x));
+}
+
+// convert GE categories to keywords
+function keywordizeGE(s) {
+    s = s.toLowerCase();
+    const r = Object.keys(romans).filter((x) => s.includes(romans[x]))[0];
+    return [
+        s,
+        s.replace('-', ''),
+        s.replace(romans[r], r),
+        s.replace('-', '').replace(romans[r], r),
+        s.slice(3).replace(romans[r], r),
+    ];
 }
 
 // convert proper names to lowercase, strip dashes so they can be split, and filter out middle initials
@@ -110,12 +124,7 @@ function parseAndWriteData(d) {
     for (const [key, value] of Object.entries(parsedData.objects)) {
         parsedData.objects[key].type = 'GE_CATEGORY';
         parsedData.objects[key].metadata = {};
-        for (const keyword of [
-            key.toLowerCase(),
-            key.toLowerCase().replace('-', ''),
-            ...keywordize(key),
-            ...keywordize(value.name),
-        ]) {
+        for (const keyword of [...keywordizeGE(key), ...keywordize(key), ...keywordize(value.name)]) {
             associate(parsedData.keywords, keyword, key);
         }
     }
