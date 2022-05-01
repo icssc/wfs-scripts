@@ -12,7 +12,7 @@
     "cross-fetch": "^3.1.5",
     "pluralize": "^8.0.0",
     "prompt-sync": "^4.2.0",
-    "websoc-fuzzy-search": "^0.6.1"
+    "websoc-fuzzy-search": "^0.7.2"
   },
   "devDependencies": {
     "prettier": "^2.6.2"
