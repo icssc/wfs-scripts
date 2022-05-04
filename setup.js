@@ -57,13 +57,22 @@ function keywordizeGE(s) {
     ];
 }
 
-// convert proper names to lowercase, strip dashes so they can be split, and filter out middle initials
+// convert proper names to lowercase and filter out middle initials
 function keywordizeName(s) {
-    return s
-        .toLowerCase()
-        .replace('-', ' ')
-        .split(' ')
-        .filter((name) => name.length > 1 && !name.includes('.'));
+    const delimiters = ['-', ' ', ''];
+    return [
+        ...new Set(
+            [s, s, s]
+                .map((x, i) =>
+                    x
+                        .toLowerCase()
+                        .replace('-', delimiters[i])
+                        .split(' ')
+                        .filter((name) => name.length > 1 && !name.includes('.'))
+                )
+                .flat()
+        ),
+    ];
 }
 
 // add object to set if keyword exists, create new set if not
@@ -124,7 +133,7 @@ function parseAndWriteData(d) {
     for (const [key, value] of Object.entries(parsedData.objects)) {
         parsedData.objects[key].type = 'GE_CATEGORY';
         parsedData.objects[key].metadata = {};
-        for (const keyword of [...keywordizeGE(key), ...keywordize(key), ...keywordize(value.name)]) {
+        for (const keyword of [keywordizeGE(key), keywordize(key), keywordize(value.name)].flat()) {
             associate(parsedData.keywords, keyword, key);
         }
     }
@@ -145,7 +154,7 @@ function parseAndWriteData(d) {
                 name: value.department_name,
                 metadata: {},
             };
-            for (const keyword of [value.department.toLowerCase(), ...keywordize(value.department_name)]) {
+            for (const keyword of [value.department.toLowerCase(), keywordize(value.department_name)].flat()) {
                 associate(parsedData.keywords, keyword, value.department);
             }
         }
