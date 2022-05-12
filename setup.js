@@ -5,6 +5,7 @@ import { join, normalize } from 'path';
 import fetch from 'cross-fetch';
 import pluralize from 'pluralize';
 import { default as aliases } from './aliases.json';
+import { default as departments } from './departments.json';
 import { default as schools } from './schools.json';
 
 // input-output configuration
@@ -188,7 +189,11 @@ function parseAndWriteData(d) {
         parsedData.objects[instructor.shortened_name] = {
             type: 'INSTRUCTOR',
             name: instructor.name,
-            metadata: { ucinetid: instructor.ucinetid },
+            metadata: {
+                ucinetid: instructor.ucinetid,
+                schools: instructor.schools.map((x) => schools[x]),
+                departments: departments[instructor.department],
+            },
         };
         associate(parsedData.keywords, instructor.ucinetid, instructor.shortened_name);
         for (const keyword of keywordizeName(instructor.name)) {
