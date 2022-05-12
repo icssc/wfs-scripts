@@ -28,6 +28,28 @@ const romans = {
     viii: '8',
 };
 
+// mapping of school names to abbreviations for more efficient storage
+// retrieved from https://catalogue.uci.edu/schoolsandprograms/ - current as of 2022-05-12
+const schools = {
+    'Division of Undergraduate Education': 'DUE',
+    'Claire Trevor School of the Arts': 'ART',
+    'School of Biological Sciences': 'BIO',
+    'The Paul Merage School of Business': 'BUS',
+    'School of Education': 'EDU',
+    'The Henry Samueli School of Engineering': 'ENG',
+    'School of Humanities': 'HUM',
+    'Donald Bren School of Information and Computer Sciences': 'ICS',
+    'Interdisciplinary Studies': 'IDS',
+    'School of Law': 'LAW',
+    'School of Medicine': 'MED',
+    'Sue and Bill Gross School of Nursing': 'NUR',
+    'School of Pharmacy and Pharmaceutical Sciences': 'PHR',
+    'School of Physical Sciences': 'PHY',
+    'Program in Public Health': 'PHL',
+    'School of Social Ecology': 'SEC',
+    'School of Social Science': 'SSC',
+};
+
 // words to filter out
 const toFilter = ['', 'a', 'o', 'an', 'at', 'in', 'it', 'of', 'on', 'to', 'and', 'for', 'the'];
 
@@ -173,6 +195,8 @@ function parseAndWriteData(d) {
                         )
                     )
                     .flat(),
+                courseLevel: value.course_level[0] === 'L' ? 0 : value.course_level[0] === 'U' ? 1 : 2,
+                school: schools[value.school],
             },
         };
         for (const keyword of keywordize(value.title)) {
