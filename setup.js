@@ -176,8 +176,9 @@ function parseAndWriteData(d) {
         parsedData.objects[instructor.shortened_name] = {
             type: 'INSTRUCTOR',
             name: instructor.name,
-            metadata: {},
+            metadata: {ucinetid: instructor.ucinetid},
         };
+        associate(parsedData.keywords, instructor.ucinetid, instructor.shortened_name);
         for (const keyword of keywordizeName(instructor.name)) {
             associate(parsedData.keywords, keyword, instructor.shortened_name);
         }
