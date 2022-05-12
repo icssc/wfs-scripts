@@ -164,6 +164,13 @@ function parseAndWriteData(d) {
             metadata: {
                 department: value.department,
                 number: value.number,
+                geList: value.ge_list
+                    .map((x) =>
+                        Object.keys(parsedData.objects)
+                            .map((y) => y.type === 'GE_CATEGORY')
+                            .filter((y) => x.replace('&', 'and').includes(parsedData.objects[y].name))
+                    )
+                    .flat(),
             },
         };
         for (const keyword of keywordize(value.title)) {
@@ -176,7 +183,7 @@ function parseAndWriteData(d) {
         parsedData.objects[instructor.shortened_name] = {
             type: 'INSTRUCTOR',
             name: instructor.name,
-            metadata: {ucinetid: instructor.ucinetid},
+            metadata: { ucinetid: instructor.ucinetid },
         };
         associate(parsedData.keywords, instructor.ucinetid, instructor.shortened_name);
         for (const keyword of keywordizeName(instructor.name)) {
