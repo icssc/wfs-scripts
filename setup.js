@@ -166,9 +166,11 @@ function parseAndWriteData(d) {
                 number: value.number,
                 geList: value.ge_list
                     .map((x) =>
-                        Object.keys(parsedData.objects)
-                            .map((y) => y.type === 'GE_CATEGORY')
-                            .filter((y) => x.replace('&', 'and').includes(parsedData.objects[y].name))
+                        Object.keys(parsedData.objects).filter(
+                            (y) =>
+                                parsedData.objects[y].type === 'GE_CATEGORY' &&
+                                x.replace('&', 'and').includes(parsedData.objects[y].name)
+                        )
                     )
                     .flat(),
             },
