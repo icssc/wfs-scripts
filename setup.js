@@ -5,6 +5,7 @@ import { join, normalize } from 'path';
 import fetch from 'cross-fetch';
 import pluralize from 'pluralize';
 import { default as aliases } from './aliases.json';
+import { default as schools } from './schools.json';
 
 // input-output configuration
 const localPrefix = normalize(`./cache/`);
@@ -26,28 +27,6 @@ const romans = {
     vi: '6',
     vii: '7',
     viii: '8',
-};
-
-// mapping of school names to abbreviations for more efficient storage
-// retrieved from https://catalogue.uci.edu/schoolsandprograms/ - current as of 2022-05-12
-const schools = {
-    'Division of Undergraduate Education': 'DUE',
-    'Claire Trevor School of the Arts': 'ART',
-    'School of Biological Sciences': 'BIO',
-    'The Paul Merage School of Business': 'BUS',
-    'School of Education': 'EDU',
-    'The Henry Samueli School of Engineering': 'ENG',
-    'School of Humanities': 'HUM',
-    'Donald Bren School of Information and Computer Sciences': 'ICS',
-    'Interdisciplinary Studies': 'IDS',
-    'School of Law': 'LAW',
-    'School of Medicine': 'MED',
-    'Sue and Bill Gross School of Nursing': 'NUR',
-    'School of Pharmacy and Pharmaceutical Sciences': 'PHR',
-    'School of Physical Sciences': 'PHY',
-    'Program in Public Health': 'PHL',
-    'School of Social Ecology': 'SEC',
-    'School of Social Science': 'SSC',
 };
 
 // words to filter out
