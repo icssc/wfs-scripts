@@ -12,7 +12,7 @@
     "cross-fetch": "^3.1.5",
     "pluralize": "^8.0.0",
     "prompt-sync": "^4.2.0",
-    "websoc-fuzzy-search": "file:../websoc-fuzzy-search"
+    "websoc-fuzzy-search": "^0.8.0-rc.1"
   },
   "devDependencies": {
     "prettier": "^2.6.2"
