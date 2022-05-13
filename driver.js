@@ -5,19 +5,12 @@ const prompt = promptSync({ sigint: true, eot: true });
 console.timeEnd('Initialization took');
 while (true) {
     try {
-        let query, numResults, mask;
+        let query, numResults, filter;
+        query = prompt('Enter a query: ');
         while (true) {
-            query = prompt('Enter a query: ');
-            if (!query) {
-                console.error('Query may not be empty.');
-            } else {
-                break;
-            }
-        }
-        while (true) {
-            numResults = prompt('Enter the number of results to return [10]: ');
+            numResults = prompt('Enter the number of results to return [Number.MAX_SAFE_INTEGER]: ');
             if (!numResults) {
-                numResults = 10;
+                numResults = Number.MAX_SAFE_INTEGER;
                 break;
             } else if (isNaN(parseInt(numResults))) {
                 console.error('Must be a number.');
@@ -25,10 +18,12 @@ while (true) {
                 break;
             }
         }
-        mask = prompt('(Optional) Enter a comma-separated list of categories to ignore: ');
-        console.time('Query took');
-        console.log(search(query, numResults, mask ? mask.split(',') : []));
-        console.timeEnd('Query took');
+        filter = prompt('(Optional) Enter a category to search for: ');
+        const start = Date.now();
+        const response = search({ query: query, numResults: numResults, filter: filter.length ? filter : undefined })
+        console.log(response);
+        const stop = Date.now();
+        console.log(`${Object.keys(response).length} result(s) found in ${stop - start} ms`);
     } catch (e) {
         console.error(e);
     }
