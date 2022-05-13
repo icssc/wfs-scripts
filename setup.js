@@ -191,8 +191,8 @@ function parseAndWriteData(d) {
             name: instructor.name,
             metadata: {
                 ucinetid: instructor.ucinetid,
-                schools: instructor.schools.map((x) => schools[x]),
-                departments: departments[instructor.department],
+                school: instructor.schools.map((x) => schools[x]),
+                department: departments[instructor.department],
             },
         };
         associate(parsedData.keywords, instructor.ucinetid, instructor.shortened_name);
