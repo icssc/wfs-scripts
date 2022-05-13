@@ -7,10 +7,10 @@ import fetch from 'cross-fetch';
 import pluralize from 'pluralize';
 
 // data imports
-import { default as aliases } from './aliases.json';
-import { default as departments } from './departments.json';
-import { default as geCategories } from './geCategories.json';
-import { default as schools } from './schools.json';
+import { default as aliases } from './sources/aliases.json';
+import { default as departments } from './sources/departments.json';
+import { default as geCategories } from './sources/geCategories.json';
+import { default as schools } from './sources/schools.json';
 
 // input-output configuration
 const localPrefix = normalize(`./cache/`);
