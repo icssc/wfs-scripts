@@ -1,0 +1,41 @@
+{
+	"GE-1A": {
+		"name": "Lower Division Writing"
+	},
+
+	"GE-1B": {
+		"name": "Upper Division Writing"
+	},
+
+	"GE-2": {
+		"name": "Science and Technology"
+	},
+
+	"GE-3": {
+		"name": "Social and Behavioral Sciences"
+	},
+
+	"GE-4": {
+		"name": "Arts and Humanities"
+	},
+
+	"GE-5A": {
+		"name": "Quantitative Literacy"
+	},
+
+	"GE-5B": {
+		"name": "Formal Reasoning"
+	},
+
+	"GE-6": {
+		"name": "Language other than English"
+	},
+
+	"GE-7": {
+		"name": "Multicultural Studies"
+	},
+
+	"GE-8": {
+		"name": "International/Global Issues"
+	}
+}

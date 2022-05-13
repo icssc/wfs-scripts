@@ -1,11 +1,15 @@
 // imports
+// library imports
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { constants } from 'os';
 import { join, normalize } from 'path';
 import fetch from 'cross-fetch';
 import pluralize from 'pluralize';
+
+// data imports
 import { default as aliases } from './aliases.json';
 import { default as departments } from './departments.json';
+import { default as geCategories } from './geCategories.json';
 import { default as schools } from './schools.json';
 
 // input-output configuration
@@ -90,47 +94,7 @@ function parseAndWriteData(d) {
     let parsedData = {
         aliases: {},
         keywords: {},
-        objects: {
-            'GE-1A': {
-                name: 'Lower Division Writing',
-            },
-
-            'GE-1B': {
-                name: 'Upper Division Writing',
-            },
-
-            'GE-2': {
-                name: 'Science and Technology',
-            },
-
-            'GE-3': {
-                name: 'Social and Behavioral Sciences',
-            },
-
-            'GE-4': {
-                name: 'Arts and Humanities',
-            },
-
-            'GE-5A': {
-                name: 'Quantitative Literacy',
-            },
-
-            'GE-5B': {
-                name: 'Formal Reasoning',
-            },
-
-            'GE-6': {
-                name: 'Language other than English',
-            },
-
-            'GE-7': {
-                name: 'Multicultural Studies',
-            },
-
-            'GE-8': {
-                name: 'International/Global Issues',
-            },
-        },
+        objects: geCategories,
     };
     for (const [key, value] of Object.entries(parsedData.objects)) {
         parsedData.objects[key].type = 'GE_CATEGORY';
