@@ -20,8 +20,12 @@ while (true) {
         }
         filter = prompt('(Optional) Enter a category to search for: ');
         const start = Date.now();
-        const response = search({ query: query, numResults: numResults, filter: filter.length ? filter : undefined })
-        console.log(response);
+        const response = search({
+            query: query,
+            numResults: numResults,
+            resultType: filter.length ? filter : undefined,
+        });
+        console.dir(response, { depth: null });
         const stop = Date.now();
         console.log(`${Object.keys(response).length} result(s) found in ${stop - start} ms`);
     } catch (e) {
