@@ -134,6 +134,3 @@ dist
 
 # cached WebSOC data from PeterPortal API
 cache/
-
-# output from npm run setup
-index.json
