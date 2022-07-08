@@ -8,14 +8,12 @@
     "setup": "node --experimental-json-modules setup.js"
   },
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "cross-fetch": "^3.1.5",
     "pluralize": "^8.0.0",
+    "prettier": "^2.6.2",
     "prompt-sync": "^4.2.0",
     "websoc-fuzzy-search": "file:.."
-  },
-  "devDependencies": {
-    "prettier": "^2.6.2"
   },
   "type": "module"
 }
