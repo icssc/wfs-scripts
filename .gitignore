@@ -134,3 +134,6 @@ dist
 
 # cached WebSOC data from PeterPortal API
 cache/
+
+# benchmark script output
+*.bench.json

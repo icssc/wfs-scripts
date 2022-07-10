@@ -4,8 +4,10 @@
   "private": true,
   "description": "Scripts for websoc-fuzzy-search",
   "scripts": {
+    "bench": "python3.10 bench.py",
     "driver": "node --experimental-json-modules driver.js",
-    "setup": "node --experimental-json-modules setup.js"
+    "setup": "node --experimental-json-modules setup.js",
+    "node": "node --experimental-json-modules"
   },
   "license": "MIT",
   "devDependencies": {

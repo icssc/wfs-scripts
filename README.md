@@ -11,3 +11,7 @@ The index builder sources cached data from <https://github.com/icssc/peterportal
 ## Driver (`npm run driver`)
 
 The driver offers a basic REPL-alike interface for testing queries.
+
+## Benchmarks (`npm run bench`)
+
+A suite of benchmarks designed to test out various aspects of the search function and the index builder.
