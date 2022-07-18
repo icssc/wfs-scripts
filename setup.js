@@ -97,7 +97,7 @@ function parseAndWriteData(d) {
         objects: geCategories,
     };
     for (const [key, value] of Object.entries(parsedData.objects)) {
-        parsedData.objects[key].push('GE_CATEGORY');
+        parsedData.objects[key].unshift('GE_CATEGORY');
         parsedData.objects[key].push({});
         for (const keyword of [keywordizeGE(key), keywordize(key), keywordize(value[0])].flat()) {
             associate(parsedData.keywords, keyword, key);
@@ -115,11 +115,7 @@ function parseAndWriteData(d) {
     // departments and courses
     for (const [key, value] of Object.entries(d.courses)) {
         if (!Object.keys(parsedData.objects).includes(value.department)) {
-            parsedData.objects[value.department] = [
-                'DEPARTMENT',
-                value.department_name,
-                {},
-            ];
+            parsedData.objects[value.department] = ['DEPARTMENT', value.department_name, {}];
             for (const keyword of [value.department.toLowerCase(), keywordize(value.department_name)].flat()) {
                 associate(parsedData.keywords, keyword, value.department);
             }
@@ -127,21 +123,21 @@ function parseAndWriteData(d) {
         parsedData.objects[key] = [
             'COURSE',
             value.title,
-            {
-                department: value.department,
-                number: value.number,
-                geList: value.ge_list
+            [
+                value.department,
+                value.number,
+                value.ge_list
                     .map((x) =>
                         Object.keys(parsedData.objects).filter(
                             (y) =>
-                                parsedData.objects[y].type === 'GE_CATEGORY' &&
-                                x.replace('&', 'and').includes(parsedData.objects[y].name)
+                                parsedData.objects[y][0] === 'GE_CATEGORY' &&
+                                x.replace('&', 'and').includes(parsedData.objects[y][1])
                         )
                     )
                     .flat(),
-                courseLevel: value.course_level[0] === 'L' ? 0 : value.course_level[0] === 'U' ? 1 : 2,
-                school: schools[value.school],
-            },
+                value.course_level[0] === 'L' ? 0 : value.course_level[0] === 'U' ? 1 : 2,
+                schools[value.school],
+            ],
         ];
         for (const keyword of keywordize(value.title)) {
             associate(parsedData.keywords, keyword, key);
@@ -153,11 +149,7 @@ function parseAndWriteData(d) {
         parsedData.objects[instructor.shortened_name] = [
             'INSTRUCTOR',
             instructor.name,
-            {
-                ucinetid: instructor.ucinetid,
-                school: instructor.schools.map((x) => schools[x]),
-                department: departments[instructor.department],
-            },
+            [instructor.ucinetid, instructor.schools.map((x) => schools[x]), departments[instructor.department]],
         ];
         associate(parsedData.keywords, instructor.ucinetid, instructor.shortened_name);
         for (const keyword of keywordizeName(instructor.name)) {
