@@ -19,7 +19,7 @@ const files = {
     courses: 'parsed_courses_cache.json',
     instructors: 'parsed_professor_cache.json',
 };
-const outputFile = normalize(`./index.json`);
+const outputFile = normalize(`./index.js`);
 
 // Roman numeral map
 // Stops at 8 because that's the highest Roman numeral encountered in the cache (as of 2022-04-08)
@@ -169,7 +169,7 @@ function parseAndWriteData(d) {
     console.log('Writing parsed data...');
     writeFileSync(
         `${outputFile}`,
-        JSON.stringify(parsedData, (k, v) => (v instanceof Set ? [...v] : v))
+        'export default ' + JSON.stringify(parsedData, (k, v) => (v instanceof Set ? [...v] : v))
     );
     console.log(`Wrote index to file ${outputFile}`);
     console.timeEnd('Index built in');
