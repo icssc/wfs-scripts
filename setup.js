@@ -97,9 +97,9 @@ function parseAndWriteData(d) {
         objects: geCategories,
     };
     for (const [key, value] of Object.entries(parsedData.objects)) {
-        parsedData.objects[key].type = 'GE_CATEGORY';
-        parsedData.objects[key].metadata = {};
-        for (const keyword of [keywordizeGE(key), keywordize(key), keywordize(value.name)].flat()) {
+        parsedData.objects[key].push('GE_CATEGORY');
+        parsedData.objects[key].push({});
+        for (const keyword of [keywordizeGE(key), keywordize(key), keywordize(value[0])].flat()) {
             associate(parsedData.keywords, keyword, key);
         }
     }
@@ -115,19 +115,19 @@ function parseAndWriteData(d) {
     // departments and courses
     for (const [key, value] of Object.entries(d.courses)) {
         if (!Object.keys(parsedData.objects).includes(value.department)) {
-            parsedData.objects[value.department] = {
-                type: 'DEPARTMENT',
-                name: value.department_name,
-                metadata: {},
-            };
+            parsedData.objects[value.department] = [
+                'DEPARTMENT',
+                value.department_name,
+                {},
+            ];
             for (const keyword of [value.department.toLowerCase(), keywordize(value.department_name)].flat()) {
                 associate(parsedData.keywords, keyword, value.department);
             }
         }
-        parsedData.objects[key] = {
-            type: 'COURSE',
-            name: value.title,
-            metadata: {
+        parsedData.objects[key] = [
+            'COURSE',
+            value.title,
+            {
                 department: value.department,
                 number: value.number,
                 geList: value.ge_list
@@ -142,7 +142,7 @@ function parseAndWriteData(d) {
                 courseLevel: value.course_level[0] === 'L' ? 0 : value.course_level[0] === 'U' ? 1 : 2,
                 school: schools[value.school],
             },
-        };
+        ];
         for (const keyword of keywordize(value.title)) {
             associate(parsedData.keywords, keyword, key);
         }
@@ -150,20 +150,22 @@ function parseAndWriteData(d) {
 
     // instructors
     for (const instructor of Object.values(d.instructors)) {
-        parsedData.objects[instructor.shortened_name] = {
-            type: 'INSTRUCTOR',
-            name: instructor.name,
-            metadata: {
+        parsedData.objects[instructor.shortened_name] = [
+            'INSTRUCTOR',
+            instructor.name,
+            {
                 ucinetid: instructor.ucinetid,
                 school: instructor.schools.map((x) => schools[x]),
                 department: departments[instructor.department],
             },
-        };
+        ];
         associate(parsedData.keywords, instructor.ucinetid, instructor.shortened_name);
         for (const keyword of keywordizeName(instructor.name)) {
             associate(parsedData.keywords, keyword, instructor.shortened_name);
         }
     }
+
+    // convert keyword references to indices in a separate
 
     // write the index using a replacer for Sets
     console.log('Writing parsed data...');
