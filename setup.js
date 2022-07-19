@@ -3,6 +3,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { constants } from 'os';
 import { join, normalize } from 'path';
+import { gzipSync } from 'zlib';
 import fetch from 'cross-fetch';
 import pluralize from 'pluralize';
 
@@ -157,13 +158,14 @@ function parseAndWriteData(d) {
         }
     }
 
-    // convert keyword references to indices in a separate
-
     // write the index using a replacer for Sets
     console.log('Writing parsed data...');
     writeFileSync(
         `${outputFile}`,
-        'export default ' + JSON.stringify(parsedData, (k, v) => (v instanceof Set ? [...v] : v))
+        'import{decode as a}from"base64-arraybuffer";import{ungzip as b}from"pako";let c=new TextDecoder;export' +
+            ' default JSON.parse(c.decode(b(a("' +
+            gzipSync(JSON.stringify(parsedData, (k, v) => (v instanceof Set ? [...v] : v))).toString('base64') +
+            '"))))'
     );
     console.log(`Wrote index to file ${outputFile}`);
     console.timeEnd('Index built in');
