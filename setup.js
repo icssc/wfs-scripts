@@ -159,12 +159,17 @@ function parseAndWriteData(d) {
 
     // write the index using a replacer for Sets
     console.log('Writing parsed data...');
+    const data = JSON.stringify(parsedData, (k, v) => (v instanceof Set ? [...v] : v));
     writeFileSync(
         `${outputFile}`,
-        'import{decode as a}from"base64-arraybuffer";import{ungzip as b}from"pako";let c=new TextDecoder;export' +
-            ' default JSON.parse(c.decode(b(a("' +
-            gzipSync(JSON.stringify(parsedData, (k, v) => (v instanceof Set ? [...v] : v))).toString('base64') +
-            '"))))'
+        ['-d', '--debug'].includes(process.argv[2])
+            ? 'export default ' + data
+            : 'import{decode as a}from"base64-arraybuffer";import{ungzip as' +
+                  ' b}from"pako";let c=new' +
+                  ' TextDecoder;export' +
+                  ' default JSON.parse(c.decode(b(a("' +
+                  gzipSync(data).toString('base64') +
+                  '"))))'
     );
     console.log(`Wrote index to file ${outputFile}`);
     console.timeEnd('Index built in');
@@ -180,7 +185,7 @@ async function verifyFiles() {
         // no idea why errnos returned by fs are negative
         if (!(-e?.errno === constants.errno.EEXIST)) throw e;
     }
-    let cachedData = {};
+    const cachedData = {};
     for (const [dataType, fileName] of Object.entries(files)) {
         const fqPath = join(localPrefix, fileName);
         try {
