@@ -99,7 +99,6 @@ function parseAndWriteData(d) {
     };
     for (const [key, value] of Object.entries(parsedData.objects)) {
         parsedData.objects[key].unshift('GE_CATEGORY');
-        parsedData.objects[key].push({});
         for (const keyword of [keywordizeGE(key), keywordize(key), keywordize(value[0])].flat()) {
             associate(parsedData.keywords, keyword, key);
         }
@@ -116,7 +115,7 @@ function parseAndWriteData(d) {
     // departments and courses
     for (const [key, value] of Object.entries(d.courses)) {
         if (!Object.keys(parsedData.objects).includes(value.department)) {
-            parsedData.objects[value.department] = ['DEPARTMENT', value.department_name, {}];
+            parsedData.objects[value.department] = ['DEPARTMENT', value.department_name];
             for (const keyword of [value.department.toLowerCase(), keywordize(value.department_name)].flat()) {
                 associate(parsedData.keywords, keyword, value.department);
             }
